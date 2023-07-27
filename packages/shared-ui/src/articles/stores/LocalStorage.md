@@ -72,3 +72,8 @@ Essentially, it's just a custom store that updates the local storage whenever th
   <!-- More content -->
 </div>
 ```
+
+| Params        | Type   | Default value |
+| ------------- | ------ | ------------- |
+| key           | string |               |
+| fallbackValue | T      |               |
