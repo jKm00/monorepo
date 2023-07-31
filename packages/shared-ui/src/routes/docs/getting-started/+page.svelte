@@ -24,6 +24,20 @@
     </hgroup>
 
     <svelte:component this={data.content} />
+
+    <div class="flex justify-between mt-10">
+      <a href="/docs" class="grid p-4 border-2 border-cyan-600 rounded">
+        <span class="text-cyan-600 text-sm">Previous:</span>
+        Documentation
+      </a>
+      <a
+        href="/docs/components"
+        class="grid p-4 border-2 border-cyan-600 rounded"
+      >
+        <span class="text-cyan-600 text-sm">Next:</span>
+        Components
+      </a>
+    </div>
   </article>
   <aside>
     <div class="sticky top-4">

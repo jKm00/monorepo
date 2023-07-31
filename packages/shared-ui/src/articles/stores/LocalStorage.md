@@ -1,8 +1,8 @@
 ---
 title: Local Storage
 description: A store used to automatically fetch and store a value to local storage.
-date: '2023-7-27'
-author: 'Joakim Edvardsen'
+date: "2023-7-27"
+author: "Joakim Edvardsen"
 published: true
 ---
 
@@ -16,14 +16,14 @@ A store used to automatically fetch and store a value to local storage.
 
 ```ts
 // The key that should reference the value in local storage
-const key = 'theme';
+const key = "theme";
 // The store is initialized with this value if there are no value currently stored in the local storage
-const fallbackValue = 'dark';
+const fallbackValue = "dark";
 // Initialize store
 const theme = useLocalStorage<string>(key, fallbackValue);
 
 // Update store
-theme.set('light');
+theme.set("light");
 ```
 
 <h2 id="implementation">Implementation</h2>
@@ -31,24 +31,28 @@ theme.set('light');
 This is what's happening under the hood:
 
 ```ts
-import { writable } from 'svelte/store';
+import { browser } from "$app/environment";
+import { writable } from "svelte/store";
 
-const useLocalStorage = <T>(key: string, fallbackValue: T) => {
-	// Initialize value
-	const storedValue = browser ? window.localStorage.getItem(key) : null;
-	const initValue = storedValue ? JSON.parse(storedValue) : fallbackValue;
+export const useLocalStorage = <T>(key: string, defaultValue: T) => {
+  // Initialize value
+  const storedValue = browser ? window.localStorage.getItem(key) : null;
+  const initValue = storedValue ? JSON.parse(storedValue) : defaultValue;
 
-	// Initialize store
-	const store = writable<T>(initValue);
+  // Initialize store
+  const store = writable<T>(initValue);
+  if (browser) {
+    window.localStorage.setItem(key, initValue);
+  }
 
-	// Update local storage whenever store changes
-	store.subscribe((value) => {
-		if (browser) {
-			window.localStorage.setItem(key, JSON.stringify(value));
-		}
-	});
+  // Update local storage when store changes
+  store.subscribe((value) => {
+    if (browser) {
+      window.localStorage.setItem(key, JSON.stringify(value));
+    }
+  });
 
-	return store;
+  return store;
 };
 ```
 
