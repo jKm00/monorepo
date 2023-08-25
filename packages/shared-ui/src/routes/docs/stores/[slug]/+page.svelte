@@ -33,8 +33,8 @@
         {#each data.headings as heading}
           <li>
             <a
-              href="#{heading.toLowerCase().replace(' ', '-')}"
-              class={hash === heading.toLowerCase().replace(" ", "-")
+              href="#{heading.replace(/ /g, '-').toLowerCase()}"
+              class={hash === heading.toLowerCase().replace(/ /g, "-")
                 ? "text-cyan-500"
                 : ""}>{heading}</a
             >

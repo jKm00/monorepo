@@ -8,7 +8,7 @@
       <a href="/" class="text-cyan-500 font-bold">Shared UI</a>
       <ul class="flex gap-4">
         <li><a href="/">Home</a></li>
-        <li><a href="/getting-started">Getting Started</a></li>
+        <li><a href="/docs/getting-started">Getting Started</a></li>
         <li><a href="/docs">Docs</a></li>
         <li>
           <a href="https://github.com/jKm00" target="_blank">Contribute</a>
