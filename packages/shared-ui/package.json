@@ -46,6 +46,7 @@
   "dependencies": {
     "cheerio": "1.0.0-rc.12",
     "dayjs": "^1.11.9",
-    "shiki": "^0.14.3"
+    "shiki": "^0.14.3",
+    "svelte-use-click-outside": "^1.0.0"
   }
 }

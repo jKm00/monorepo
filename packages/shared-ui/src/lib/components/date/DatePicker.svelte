@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { clickOutside } from 'svelte-use-click-outside';
 	import dayjs, { Dayjs } from 'dayjs';
 	import { createEventDispatcher } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
@@ -30,11 +31,14 @@
 
 	export let placeholder = 'Not selected';
 	export let closeOnSelect = false;
+	export let selectedDate: Date | null = null;
 
-	const dispatch = createEventDispatcher<{ selected: Date }>();
+	const dispatch = createEventDispatcher<{
+		selected: Date;
+		cleared: null;
+	}>();
 
-	let showCalendar = true;
-	let selectedDate: Date | null = null;
+	let showCalendar = false;
 	let displayedDate = selectedDate ? dayjs(selectedDate) : dayjs();
 
 	$: gridDates = calculateGridDates(displayedDate);
@@ -50,13 +54,10 @@
 		// Append dates from previous month
 		const prevMonth = firstDayOfMonth.subtract(1, 'month');
 		for (let i = 0; i < firstDayOfMonth.day(); i++) {
-			grid = [
-				{
-					day: prevMonth.daysInMonth() - i,
-					state: 'PREV',
-				},
-				...grid,
-			];
+			grid.push({
+				day: prevMonth.daysInMonth() - firstDayOfMonth.day() + i + 1,
+				state: 'PREV',
+			});
 		}
 
 		// Append all dates in displayed month
@@ -116,27 +117,47 @@
 		}
 	};
 
+	const handlePrevMonthSelect = (day: number) => {
+		onPrevMonth();
+		handleSelect(day);
+	};
+
+	const handleNextMonthSelect = (day: number) => {
+		onNextMonth();
+		handleSelect(day);
+	};
+
 	const clearSelected = () => {
 		selectedDate = null;
 
 		if (closeOnSelect) {
 			showCalendar = false;
 		}
+
+		dispatch('cleared', selectedDate);
+	};
+
+	const closeCalendar = () => {
+		showCalendar = false;
 	};
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="w-max relative" on:keyup={handleKeyUp}>
+<div
+	class="w-full relative"
+	on:keyup={handleKeyUp}
+	use:clickOutside={closeCalendar}
+>
 	<!-- Input -->
 	<button
 		on:click={toggleCalendar}
-		class="flex items-center justify-between gap-2 w-44 bg-slate-700 rounded-sm overflow-hidden group"
+		class="flex items-center justify-between gap-2 w-full bg-slate-700 rounded overflow-hidden group"
 	>
-		<span class="px-4 {selectedDate ? '' : 'text-slate-400'}">
+		<span class="px-3 {selectedDate ? '' : 'text-slate-400'}">
 			{selectedDate ? dayjs(selectedDate).format('DD.MM.YYYY') : placeholder}
 		</span>
 		<span
-			class="p-4 bg-slate-600 group-hover:bg-slate-500 group-focus-within:bg-slate-500"
+			class="p-3 bg-slate-600 group-hover:bg-slate-500 group-focus-visible:bg-slate-500"
 		>
 			<svg
 				class="fill-white"
@@ -154,13 +175,14 @@
 		<div
 			in:scale={{ duration: 250, start: 0.75 }}
 			out:fade={{ duration: 100 }}
-			class="bg-slate-700 absolute rounded-sm overflow-hidden w-64"
+			class="bg-slate-700 absolute z-10 right-0 rounded overflow-hidden w-72 shadow-2xl"
 		>
 			<!-- Controllers -->
 			<div class="grid grid-cols-7 bg-slate-600">
 				<button
 					on:click={onPrevYear}
-					class="flex items-center justify-center p-2 hover:bg-slate-500 focus-within:bg-slate-500 active:bg-slate-400"
+					class="flex items-center justify-center p-2 hover:bg-slate-500 focus-visible:bg-slate-500 active:bg-slate-400"
+					title="Previous year"
 					><svg
 						class="fill-white"
 						xmlns="http://www.w3.org/2000/svg"
@@ -173,7 +195,8 @@
 				>
 				<button
 					on:click={onPrevMonth}
-					class="flex items-center justify-center p-2 hover:bg-slate-500 focus-within:bg-slate-500 active:bg-slate-400"
+					class="flex items-center justify-center p-2 hover:bg-slate-500 focus-visible:bg-slate-500 active:bg-slate-400"
+					title="Previous month"
 					><svg
 						class="fill-white"
 						xmlns="http://www.w3.org/2000/svg"
@@ -192,7 +215,8 @@
 				</p>
 				<button
 					on:click={onNextMonth}
-					class="flex items-center justify-center p-2 hover:bg-slate-500 focus-within:bg-slate-500 active:bg-slate-400"
+					class="flex items-center justify-center p-2 hover:bg-slate-500 focus-visible:bg-slate-500 active:bg-slate-400"
+					title="Next month"
 					><svg
 						class="fill-white"
 						xmlns="http://www.w3.org/2000/svg"
@@ -205,7 +229,8 @@
 				>
 				<button
 					on:click={onNextYear}
-					class="flex items-center justify-center p-2 hover:bg-slate-500 focus-within:bg-slate-500 active:bg-slate-400"
+					class="flex items-center justify-center p-2 hover:bg-slate-500 focus-visible:bg-slate-500 active:bg-slate-400"
+					title="Next year"
 					><svg
 						class="fill-white"
 						xmlns="http://www.w3.org/2000/svg"
@@ -231,14 +256,14 @@
 						dayjs(selectedDate).date() === date.day}
 					{#if date.state === 'PREV'}
 						<button
-							on:click={onPrevMonth}
-							class="p-2 text-slate-400 hover:bg-slate-600 focus-within:bg-slate-600 active:bg-slate-500"
+							on:click={() => handlePrevMonthSelect(date.day)}
+							class="p-2 text-slate-400 hover:bg-slate-600 focus-visible:bg-slate-600 active:bg-slate-500"
 							>{date.day}</button
 						>
 					{:else if date.state === 'NEXT'}
 						<button
-							on:click={onNextMonth}
-							class="p-2 text-slate-400 hover:bg-slate-600 focus-within:bg-slate-600 active:bg-slate-500"
+							on:click={() => handleNextMonthSelect(date.day)}
+							class="p-2 text-slate-400 hover:bg-slate-600 focus-visible:bg-slate-600 active:bg-slate-500"
 							>{date.day}</button
 						>
 					{:else}
@@ -246,14 +271,16 @@
 							on:click={() => handleSelect(date.day)}
 							class={selected
 								? 'bg-cyan-500 p-2 hover:bg-cyan-600 active:bg-cyan-700'
-								: 'p-2 hover:bg-slate-600 focus-within:bg-slate-600 active:bg-slate-500'}
+								: 'p-2 hover:bg-slate-600 focus-visible:bg-slate-600 active:bg-slate-500'}
 							>{date.day}</button
 						>
 					{/if}
 				{/each}
 				<button
 					on:click={clearSelected}
-					class="col-span-full text-sm text-slate-400 p-1 hover:bg-slate-600 focus-within:bg-slate-600 active:bg-slate-500"
+					class="{selectedDate
+						? 'text-slate-200'
+						: ''} col-span-full text-sm text-slate-400 p-1 hover:bg-slate-600 focus-visible:bg-slate-600 active:bg-slate-500"
 					>Clear</button
 				>
 			</div>
