@@ -9,3 +9,7 @@ export let profiles: Profile[] = [
 		password: '1234'
 	}
 ];
+
+export const addProfile = (profile: Profile) => {
+	profiles = [...profiles, profile];
+};

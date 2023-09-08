@@ -1,6 +1,6 @@
 import { profiles } from '$lib/server/profiles.js';
 import { hashString } from '$lib/server/utils.js';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 
 export const actions = {
 	default: async (event) => {
@@ -44,6 +44,6 @@ export const actions = {
 			maxAge: 60 * 60 * 24 // 1 day
 		});
 
-		return { success: true, auth: { username: username, token: token }}
+		return { success: true, auth: { username: username, token: token } };
 	}
 };
