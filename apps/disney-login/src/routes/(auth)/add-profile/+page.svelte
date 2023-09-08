@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import AuthNavBar from '$lib/components/AuthNavBar.svelte';
+	import SecondaryLink from '$lib/components/links/SecondaryLink.svelte';
 
 	export let data;
 	export let form;
@@ -23,6 +25,9 @@
 	}
 </script>
 
+<AuthNavBar>
+	<SecondaryLink link="/edit-profiles">Cancel</SecondaryLink>
+</AuthNavBar>
 <div class="custom-grid mt-10">
 	<h1 class="font-bold text-3xl title">Add profile</h1>
 	<div class="relative picture-wrapper">

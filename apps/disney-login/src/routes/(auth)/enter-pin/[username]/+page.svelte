@@ -7,6 +7,8 @@
 	import { authStore } from '$lib/stores/authStore.js';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
+	import AuthNavBar from '$lib/components/AuthNavBar.svelte';
+	import SecondaryLink from '$lib/components/links/SecondaryLink.svelte';
 
 	export let data;
 	export let form;
@@ -23,12 +25,22 @@
 		formElement.submit();
 	};
 
+	$: prevPage = $page.url.searchParams.get('prevPage') ?? '/select-profile';
+
 	$: if (form?.success && browser) {
-		authStore.set(form.auth.username, form.auth.token)
-		goto('/home')
+		authStore.set(form.auth.username, form.auth.token);
+		const destionation = $page.url.searchParams.get('destination');
+		if (destionation) {
+			goto(destionation);
+		} else {
+			goto('/home');
+		}
 	}
 </script>
 
+<AuthNavBar>
+	<SecondaryLink link={prevPage}>Cancel</SecondaryLink>
+</AuthNavBar>
 <div class="grid gap-8 justify-center pt-10">
 	<ProfileContainer {profile} />
 	<PinCode bind:pin on:submit={handleSubmit} wrongPin={error} />

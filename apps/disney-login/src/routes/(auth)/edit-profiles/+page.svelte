@@ -1,7 +1,7 @@
 <script lang="ts">
 	import AuthNavBar from '$lib/components/AuthNavBar.svelte';
 	import ProfileContainer from '$lib/components/ProfileContainer.svelte';
-	import SecondaryLink from '$lib/components/links/SecondaryLink.svelte';
+	import PrimaryLink from '$lib/components/links/PrimaryLink.svelte';
 	import { sineIn } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 
@@ -11,14 +11,18 @@
 </script>
 
 <AuthNavBar>
-	<SecondaryLink link="/edit-profiles">Edit profiles</SecondaryLink>
+	<PrimaryLink link="/select-profile">Done</PrimaryLink>
 </AuthNavBar>
 <div class="flex-grow flex flex-col items-center">
-	<h1 class="text-white font-bold text-3xl my-20">Who's watching?</h1>
+	<h1 class="text-white font-bold text-3xl my-20">Edit profiles</h1>
 	<div in:fly={{ y: -50, duration: 200, easing: sineIn }} class="flex gap-4">
 		{#if profiles}
 			{#each profiles as profile}
-				<ProfileContainer {profile} />
+				<ProfileContainer
+					{profile}
+					destination={`/edit-profile/${profile.username}`}
+					prevPage="/edit-profiles"
+				/>
 			{/each}
 		{/if}
 		<a href="/select-avatar" class="flex flex-col gap-4 items-center">

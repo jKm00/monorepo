@@ -1,9 +1,27 @@
 <script lang="ts">
 	export let profile: Profile;
+	export let destination: string | undefined = undefined;
+	export let prevPage: string | undefined = undefined;
+
+	let searchParams = new URLSearchParams();
+	if (destination) {
+		searchParams.append('destination', destination);
+	}
+
+	if (prevPage) {
+		searchParams.append('prevPage', prevPage);
+	}
+
+	let link: string;
+	if (searchParams.size > 0) {
+		link = `/enter-pin/${profile.username}?${searchParams.toString()}`;
+	} else {
+		link = `/enter-pin/${profile.username}`;
+	}
 </script>
 
 <div class="flex flex-col gap-4 items-center">
-	<a href="/enter-pin/{profile.username}" class="group">
+	<a href={link} class="group">
 		<img
 			class="w-36 group-hover:scale-105 group-hover:border-white transition-all duration-300 border-4 border-transparent rounded-full"
 			src="/assets/profile-pictures/{profile.img.src}"
