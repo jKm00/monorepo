@@ -6,6 +6,6 @@ export let profiles: Profile[] = [
 			alt: "jKm's profile picture"
 		},
 		isPasswordProtected: true,
-		password: '2542'
+		password: '1234'
 	}
 ];

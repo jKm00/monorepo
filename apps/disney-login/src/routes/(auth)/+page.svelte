@@ -4,7 +4,7 @@
 	import { Shadow } from 'svelte-loading-spinners';
 
 	onMount(() => {
-		const delay = (Math.floor(Math.random() * 3) + 1) * 1000;
+		const delay = (Math.floor(Math.random() * 2) + 1) * 1000;
 		setTimeout(() => {
 			goto('/select-profile');
 		}, delay);

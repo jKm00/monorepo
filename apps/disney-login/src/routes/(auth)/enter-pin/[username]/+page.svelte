@@ -4,8 +4,12 @@
 	import { enhance } from '$app/forms';
 	import { tick } from 'svelte';
 	import { page } from '$app/stores';
+	import { authStore } from '$lib/stores/authStore.js';
+	import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
 
 	export let data;
+	export let form;
 
 	let formElement: HTMLFormElement;
 	let pin: number[];
@@ -14,10 +18,15 @@
 
 	$: error = String($page.status)[0] !== '2';
 
-	const handleSubmit = async (event: CustomEvent<number[]>) => {
+	const handleSubmit = async () => {
 		await tick();
 		formElement.submit();
 	};
+
+	$: if (form?.success && browser) {
+		authStore.set(form.auth.username, form.auth.token)
+		goto('/home')
+	}
 </script>
 
 <div class="grid gap-8 justify-center pt-10">

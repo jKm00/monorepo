@@ -1,5 +1,7 @@
 <script lang="ts">
 	import ProfileContainer from '$lib/components/ProfileContainer.svelte';
+	import { sineIn } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
 
 	export let data;
 
@@ -8,7 +10,7 @@
 
 <div class="flex-grow flex flex-col items-center">
 	<h1 class="text-white font-bold text-3xl my-20">Who's watching?</h1>
-	<div class="flex gap-4">
+	<div in:fly={{ y: -50, duration: 200, easing: sineIn }} class="flex gap-4">
 		{#if profiles}
 			{#each profiles as profile}
 				<ProfileContainer {profile} />

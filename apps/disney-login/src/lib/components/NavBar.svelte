@@ -1,8 +1,21 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import { authStore } from '$lib/stores/authStore';
+	import { deleteCookie } from '$lib/utils';
 
-	const handleLogout = () => {
-		goto('/select-profile');
+	const handleLogout = async () => {
+		try {
+			await fetch('/api/v1/logout', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			goto('/');
+		} catch (error) {
+			console.error(error);
+		}
 	};
 </script>
 

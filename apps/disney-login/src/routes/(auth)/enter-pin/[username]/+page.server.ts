@@ -44,6 +44,6 @@ export const actions = {
 			maxAge: 60 * 60 * 24 // 1 day
 		});
 
-		throw redirect(302, '/home');
+		return { success: true, auth: { username: username, token: token }}
 	}
 };

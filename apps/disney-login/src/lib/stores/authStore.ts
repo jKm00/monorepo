@@ -11,6 +11,10 @@ function createAuthStore() {
 		});
 	};
 
+	const clear = () => {
+		set(undefined)
+	}
+
 	if (browser) {
 		const username = window.localStorage.getItem('username');
 		const token = window.localStorage.getItem('token');
@@ -21,14 +25,24 @@ function createAuthStore() {
 
 	subscribe((value) => {
 		if (browser) {
-			window.localStorage.setItem('username', value?.username ?? '');
-			window.localStorage.setItem('token', value?.token ?? '');
+			if (value?.username) {
+				window.localStorage.setItem('username', value?.username ?? '');
+			} else {
+				window.localStorage.removeItem('username')
+			}
+
+			if (value?.token) {
+				window.localStorage.setItem('token', value?.token ?? '');
+			} else {
+				window.localStorage.removeItem('token')
+			}
 		}
 	});
 
 	return {
 		subscribe,
-		set: setAuth
+		set: setAuth,
+		clear,
 	};
 }
 
