@@ -1,7 +1,7 @@
-import { redirect } from "@sveltejs/kit";
+import { redirect } from '@sveltejs/kit';
 
 export const load = async ({ locals }) => {
-    if (locals.session) {
-        throw redirect(302, '/home')
-    }
+	if (locals.session) {
+		throw redirect(302, '/home');
+	}
 };

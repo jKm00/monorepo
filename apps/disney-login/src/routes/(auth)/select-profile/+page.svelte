@@ -15,7 +15,10 @@
 </AuthNavBar>
 <div class="flex-grow flex flex-col items-center">
 	<h1 class="text-white font-bold text-3xl my-20">Who's watching?</h1>
-	<div in:fly={{ y: -50, duration: 200, easing: sineIn }} class="flex gap-4">
+	<div
+		in:fly={{ y: -50, duration: 200, easing: sineIn }}
+		class="flex flex-wrap justify-center gap-4"
+	>
 		{#if profiles}
 			{#each profiles as profile}
 				<ProfileContainer {profile} />

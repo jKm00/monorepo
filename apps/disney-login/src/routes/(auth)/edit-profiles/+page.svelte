@@ -2,20 +2,27 @@
 	import AuthNavBar from '$lib/components/AuthNavBar.svelte';
 	import ProfileContainer from '$lib/components/ProfileContainer.svelte';
 	import PrimaryLink from '$lib/components/links/PrimaryLink.svelte';
+	import { authStore } from '$lib/stores/authStore.js';
 	import { sineIn } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 
 	export let data;
 
 	$: ({ profiles } = data);
+
+	$: link = $authStore ? '/home' : '/select-profile';
 </script>
 
 <AuthNavBar>
-	<PrimaryLink link="/select-profile">Done</PrimaryLink>
+	<PrimaryLink {link}>Done</PrimaryLink>
 </AuthNavBar>
 <div class="flex-grow flex flex-col items-center">
-	<h1 class="text-white font-bold text-3xl my-20">Edit profiles</h1>
-	<div in:fly={{ y: -50, duration: 200, easing: sineIn }} class="flex gap-4">
+	<h1 class="text-white font-bold text-3xl mt-20 mb-5">Edit profiles</h1>
+	<h2 class="text-gray-400 font-bold text-xl mb-10">Select a profile to edit</h2>
+	<div
+		in:fly={{ y: -50, duration: 200, easing: sineIn }}
+		class="flex flex-wrap justify-center gap-4"
+	>
 		{#if profiles}
 			{#each profiles as profile}
 				<ProfileContainer

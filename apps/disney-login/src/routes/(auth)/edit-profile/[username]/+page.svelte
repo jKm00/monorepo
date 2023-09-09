@@ -1,27 +1,28 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import AuthNavBar from '$lib/components/AuthNavBar.svelte';
 	import PrimaryButton from '$lib/components/buttons/PrimaryButton.svelte';
 	import SecondaryButton from '$lib/components/buttons/SecondaryButton.svelte';
 
 	export let data;
+	export let form;
+
+	let errorMsg: string | null = null;
+
+	$: if (form?.error) {
+		errorMsg = form.error;
+	}
 
 	$: ({ profile, numberOfProfiles, tmpImg } = data);
 
-	const logout = async () => {
-		try {
-			await fetch('/api/v1/logout', {
-				method: 'post'
-			});
-			goto('/edit-profiles');
-		} catch (error) {
-			console.log(error);
-		}
+	const handleLogout = () => {
+		goto('/logout?redirect=/edit-profiles');
 	};
 </script>
 
 <AuthNavBar>
-	<SecondaryButton on:click={logout}>Cancel</SecondaryButton>
+	<SecondaryButton on:click={handleLogout}>Cancel</SecondaryButton>
 </AuthNavBar>
 <div class="custom-grid mt-10">
 	<div class="title text-center">
@@ -51,14 +52,26 @@
 		>
 	</div>
 	<form class="form grid gap-4" method="post" action="?/save">
-		<input type="hidden" name="img" value={tmpImg ? tmpImg.id : -1} />
+		<input type="hidden" name="id" value={profile.id} />
+		<input type="hidden" name="imgId" value={tmpImg ? tmpImg.id : -1} />
 		<input
 			class="p-3 rounded-sm text-sm bg-gray-800 w-full"
 			type="text"
+			name="username"
 			bind:value={profile.username}
 			placeholder="Profile name"
 		/>
+		<input
+			class="p-3 rounded-sm text-sm bg-gray-800 w-full"
+			type="password"
+			name="password"
+			bind:value={profile.password}
+			placeholder="Profile name"
+		/>
 		<PrimaryButton>Save</PrimaryButton>
+		{#if errorMsg}
+			<p class="text-sm text-red-400 text-center">{errorMsg}</p>
+		{/if}
 		{#if numberOfProfiles > 1}
 			<button formaction="?/delete" class="text-sky-500">Delete profile</button>
 		{/if}

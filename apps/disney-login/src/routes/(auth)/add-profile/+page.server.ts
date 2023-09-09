@@ -55,6 +55,7 @@ export const actions = {
 		}
 
 		addProfile({
+			id: profiles[profiles.length - 1].id + 1,
 			username,
 			img: {
 				src: image?.src,

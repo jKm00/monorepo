@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import AuthNavBar from '$lib/components/AuthNavBar.svelte';
+	import SecondaryLink from '$lib/components/links/SecondaryLink.svelte';
 	import { profilePictures } from './profilePictures';
 
 	export let data;
@@ -10,7 +12,10 @@
 	$: destination = $page.url.searchParams.get('destination') ?? '/add-profile';
 </script>
 
-<div class="grid gap-4 px-10 py-5">
+<AuthNavBar>
+	<SecondaryLink link="/select-profile">Cancel</SecondaryLink>
+</AuthNavBar>
+<div class="grid gap-4 px-10 py-5 mt-10">
 	<h1 class="font-bold text-3xl">Select avatar</h1>
 	<div class="flex gap-4">
 		{#each profilePictures as picture}
