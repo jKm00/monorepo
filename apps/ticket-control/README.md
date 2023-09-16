@@ -1,4 +1,4 @@
-# Ticker Control
+# Ticket Control
 
 A ticker control app for employees at a ticker control company used to register people that has not payed for a regular ticket.
 
