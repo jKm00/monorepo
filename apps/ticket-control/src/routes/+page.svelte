@@ -54,8 +54,11 @@
 	<div class="grid gap-2">
 		<div class="flex gap-4">
 			<Input bind:value={input} type="text" placeholder="Social Security Number" name="ssn" />
-			<Button on:click={handleSubmit}>Check</Button>
+			<Button on:click={handleSubmit} disabled={$route.length === 0}>Check</Button>
 		</div>
+		{#if $route.length === 0}
+			<p class="text-center text-sm text-muted-foreground">Select route before checking people!</p>
+		{/if}
 		{#if errorMsg.length > 0}
 			<p class="text-center text-sm text-red-300">{errorMsg}</p>
 		{/if}

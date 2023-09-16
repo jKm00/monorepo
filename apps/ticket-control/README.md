@@ -10,6 +10,19 @@ My idea to this problem is that for every time you get caught in a ticket contro
 
 This is an prototype of an application that can be used by the employees of the ticker control companies to look up and register people and the price they have to pay depending on how many times they have gotten caught before.
 
+## Live Demo
+
+1. Go to [https://magenta-squirrel-9c8948.netlify.app](https://magenta-squirrel-9c8948.netlify.app)
+2. Login with username: admin, password: admin123
+3. Select a route (look below for a list of available routes)
+4. Search for a person by social security number (only two dummy persons are available: 31108494583 and 29059845793)
+
+### Available routes
+
+R21 - Moss, R21 - Oslo, R22 - Mysen, R22 - Oslo, RE20 - Goteborg, R23 - Ski, RE20 - Halden, RE20 - Oslo, R23 - Oslo
+
+_Type some or all of the letters when selecting a route_
+
 ## Getting Started
 
 1. Clone repo

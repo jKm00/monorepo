@@ -4,10 +4,21 @@
 	import * as Card from '$lib/components/ui/card';
 	import * as Table from '$lib/components/ui/table';
 	import { Button } from '$lib/components/ui/button';
+	import { route } from '$lib/stores/routeStore';
+	import { toast } from '$lib/components/ui/toast/toastStore.js';
 
 	export let data;
+	export let form;
 
 	$: ({ person, ssn } = data);
+
+	$: if (form?.success) {
+		toast.push({
+			type: 'success',
+			title: 'Success',
+			desc: 'Invoice sent'
+		});
+	}
 </script>
 
 <NavBar>
@@ -16,7 +27,11 @@
 
 {#if person}
 	<div class="grid gap-4 p-4">
-		<Button class="justify-self-end">File new ticket</Button>
+		<form method="POST" class="justify-self-end">
+			<input type="hidden" name="ssn" value={person.ssn} />
+			<input type="hidden" name="route" value={$route} />
+			<Button>File new ticket</Button>
+		</form>
 		<Card.Root>
 			<Card.Header>
 				<Card.Title>General info</Card.Title>
@@ -67,7 +82,8 @@
 									<Table.Cell>{ticket.date}</Table.Cell>
 									<Table.Cell>{ticket.time}</Table.Cell>
 									<Table.Cell>{ticket.route}</Table.Cell>
-									<Table.Cell class="text-right">{ticket.price}{ticket.unit}</Table.Cell>
+									<Table.Cell class="text-right">{Math.round(ticket.price)}{ticket.unit}</Table.Cell
+									>
 									<Table.Cell class="text-right">{ticket.payed}</Table.Cell>
 								</Table.Row>
 							{/each}

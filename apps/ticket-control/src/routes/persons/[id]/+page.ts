@@ -2,10 +2,14 @@ import type { PersonResponse } from '$lib/types.js';
 
 export const load = async ({ params, fetch }) => {
     const findPerson = async () => {
-        const result = await fetch(`/api/v1/persons/${29059845893}`)
-        const person = await result.json()
+        try {
+            const result = await fetch(`/api/v1/persons/${params.id}`)
+            const person = await result.json()
 
-        return person as PersonResponse
+            return person as PersonResponse
+        } catch (error) {
+            return undefined
+        }
     }
 
     return {
