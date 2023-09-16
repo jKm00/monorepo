@@ -22,12 +22,13 @@ export const actions = {
         const { username, password } = form.data as Record<string, string>
 
         if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
-            console.log('hi')
             return message(form, 'Wrong username or password');
         }
 
         event.cookies.set('Authorization', AUTH_TOKEN)
 
-        throw redirect(302, "/")
+        const redirectTo = event.url.searchParams.get('redirectTo')
+
+        throw redirect(302, redirectTo ?? '/')
     }
 }
