@@ -7,13 +7,15 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { allRoutes } from '$lib/shared/allRoutes';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
+	import { get } from 'svelte/store';
 
 	let input: string = '';
 	let errorMsg: string = '';
 
 	let routeSearch: string = '';
-	let routeError: string = '';
-	let routeSuccess: string = '';
+	let selectedRoute: string = get(route) ?? '';
+
+	$: filteredRoutes = allRoutes.filter((r) => r.includes(routeSearch));
 
 	const handleSubmit = () => {
 		if (input.length === 0) {
@@ -27,24 +29,6 @@
 		}
 
 		goto(`/persons/${input}`);
-	};
-
-	const handleRouteChange = () => {
-		routeError = '';
-		const foundRoute = allRoutes.find((r) => r.includes(routeSearch));
-
-		if (!foundRoute) {
-			routeError = `Could not find route with: ${routeSearch}`;
-			return;
-		}
-
-		route.set(foundRoute);
-
-		routeSuccess = `Route changed to: ${foundRoute}`;
-
-		setTimeout(() => {
-			routeSuccess = '';
-		}, 3000);
 	};
 </script>
 
@@ -80,22 +64,26 @@
 						<Dialog.Header>
 							<Dialog.Title>Edit route</Dialog.Title>
 							<Dialog.Description>
-								Enter the number or the name of the route. Click save when you're done.
+								Click on one of the routes to select it. Use the input to search for routes.
 							</Dialog.Description>
 						</Dialog.Header>
 						<div class="grid gap-2 py-4">
-							<Input id="name" placeholder="Route" bind:value={routeSearch} />
-							{#if routeError.length > 0}
-								<p class="text-center text-sm text-red-300">{routeError}</p>
-							{/if}
-							{#if routeSuccess.length > 0}
-								<p class="text-center text-sm text-green-500">
-									{routeSuccess}
-								</p>
-							{/if}
+							<Input id="name" placeholder="Search for route" bind:value={routeSearch} />
+							<div class="grid gap-2 mt-4">
+								<h2 class="font-semibold text-sm">Filtered routes</h2>
+								<div class="flex flex-wrap gap-2">
+									{#each filteredRoutes as _route}
+										<Button
+											on:click={() => (selectedRoute = _route)}
+											variant={selectedRoute === _route ? 'default' : 'outline'}>{_route}</Button
+										>
+									{/each}
+								</div>
+							</div>
 						</div>
 						<Dialog.Footer>
-							<Button on:click={handleRouteChange} type="submit">Save changes</Button>
+							<Button on:click={() => (selectedRoute = '')} variant="outline">Clear</Button>
+							<Button on:click={() => route.set(selectedRoute)}>Save changes</Button>
 						</Dialog.Footer>
 					</Dialog.Content>
 				</Dialog.Root>
