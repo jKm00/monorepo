@@ -1,6 +1,6 @@
 # Ticket Control
 
-A ticker control app for employees at a ticker control company used to register people that has not payed for a regular ticket.
+A ticket control app for employees at a ticket control company used to register people that has not payed for a regular ticket.
 
 ## Background
 
