@@ -29,6 +29,6 @@ export const actions = {
 
         const redirectTo = event.url.searchParams.get('redirectTo')
 
-        throw redirect(302, redirectTo ?? '/')
+        throw redirect(302, redirectTo === 'null' ? '/' : redirectTo ?? '/')
     }
 }
