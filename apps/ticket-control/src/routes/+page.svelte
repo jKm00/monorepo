@@ -15,7 +15,7 @@
 	let routeSearch: string = '';
 	let selectedRoute: string = get(route) ?? '';
 
-	$: filteredRoutes = allRoutes.filter((r) => r.includes(routeSearch));
+	$: filteredRoutes = allRoutes.filter((r) => r.toLowerCase().includes(routeSearch.toLowerCase()));
 
 	const handleSubmit = () => {
 		if (input.length === 0) {
@@ -72,12 +72,16 @@
 							<div class="grid gap-2 mt-4">
 								<h2 class="font-semibold text-sm">Filtered routes</h2>
 								<div class="flex flex-wrap gap-2">
-									{#each filteredRoutes as _route}
-										<Button
-											on:click={() => (selectedRoute = _route)}
-											variant={selectedRoute === _route ? 'default' : 'outline'}>{_route}</Button
-										>
-									{/each}
+									{#if filteredRoutes.length === 0}
+										<p class="text-center text-muted-foreground text-sm">No routes found</p>
+									{:else}
+										{#each filteredRoutes as _route}
+											<Button
+												on:click={() => (selectedRoute = _route)}
+												variant={selectedRoute === _route ? 'default' : 'outline'}>{_route}</Button
+											>
+										{/each}
+									{/if}
 								</div>
 							</div>
 						</div>
