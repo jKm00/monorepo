@@ -17,11 +17,11 @@ This is an prototype of an application that can be used by the employees of the 
 ```
 pnpm install
 ```
-3. Run application
+3. Create `.env` file following the `.env.example`
+4. Run application
 ```
 pnpm dev
 ```
-4. Create `.env` file following the `.env.example`
 
 ## Tools
 
