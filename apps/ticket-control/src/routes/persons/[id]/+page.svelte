@@ -130,8 +130,8 @@
 								<Table.Head>Date</Table.Head>
 								<Table.Head>Time</Table.Head>
 								<Table.Head>Route</Table.Head>
-								<Table.Head class="text-right">Price</Table.Head>
 								<Table.Head>Method</Table.Head>
+								<Table.Head class="text-right">Price</Table.Head>
 								<Table.Head class="text-right">Payed</Table.Head>
 								<Table.Head />
 							</Table.Row>
@@ -142,9 +142,9 @@
 									<Table.Cell>{ticket.date}</Table.Cell>
 									<Table.Cell>{ticket.time}</Table.Cell>
 									<Table.Cell>{ticket.route}</Table.Cell>
+									<Table.Cell>{ticket.paymentMethod}</Table.Cell>
 									<Table.Cell class="text-right">{Math.round(ticket.price)}{ticket.unit}</Table.Cell
 									>
-									<Table.Cell>{ticket.paymentMethod}</Table.Cell>
 									<Table.Cell class="text-right">{ticket.payed}</Table.Cell>
 									<Table.Cell class="text-right">
 										{#if !ticket.payed}
