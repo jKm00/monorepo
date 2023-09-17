@@ -146,7 +146,7 @@
 									>
 									<Table.Cell>{ticket.paymentMethod}</Table.Cell>
 									<Table.Cell class="text-right">{ticket.payed}</Table.Cell>
-									<Table.Cell>
+									<Table.Cell class="text-right">
 										{#if !ticket.payed}
 											<form method="post" action="?/delete">
 												<input type="hidden" name="ssn" value={person.ssn} />
