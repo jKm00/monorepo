@@ -13,7 +13,7 @@
 	export let form;
 
 	let formElement: HTMLFormElement;
-	let selectedPayment: 'vipps' | 'faktura' | undefined = undefined;
+	let selectedPayment: 'vipps' | 'invoice' | undefined = undefined;
 	let errorMsg = '';
 
 	$: ({ person, ssn } = data);
@@ -69,10 +69,10 @@
 									<img src="/vipps_logo.png" alt="Vipps logo" class="max-w-[150px]" />
 								</Card.Root>
 							</button>
-							<button on:click={() => (selectedPayment = 'faktura')} type="button">
+							<button on:click={() => (selectedPayment = 'invoice')} type="button">
 								<Card.Root
 									class="grid place-items-center py-8 hover:scale-105 focus-visible:scale-105 transition-transform {selectedPayment ===
-									'faktura'
+									'invoice'
 										? 'border-primary'
 										: ''}"
 								>
