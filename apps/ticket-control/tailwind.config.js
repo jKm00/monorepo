@@ -46,6 +46,9 @@ const config = {
 				card: {
 					DEFAULT: "hsl(var(--card))",
 					foreground: "hsl(var(--card-foreground))"
+				},
+				vipps: {
+					DEFAULT: "#ff5b24"
 				}
 			},
 			borderRadius: {

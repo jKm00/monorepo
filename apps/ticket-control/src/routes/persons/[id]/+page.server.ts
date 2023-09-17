@@ -9,10 +9,11 @@ export const load = async ({ locals, params }) => {
 };
 
 export const actions = {
-    default: async ({ request }) => {
+    add: async ({ request }) => {
         const data = await request.formData();
         const ssn = data.get('ssn')
         const route = data.get('route')
+        const paymentMethod = data.get('paymentMethod');
 
         if (!ssn) {
             return {
@@ -26,10 +27,15 @@ export const actions = {
             }
         }
 
+        if (!paymentMethod) {
+            return {
+                error: 'No payment method selected'
+            }
+        }
+
         const index = persons.findIndex(p => p.ssn === Number(ssn))
 
         if (index === -1) {
-            console.log('hi')
             return {
                 error: `Did not find person with ssn: ${ssn}`
             }
@@ -42,6 +48,7 @@ export const actions = {
             date: dayjs(currentDate).format("DD.MM.YYYY"),
             time: dayjs(currentDate).format("HH.mm"),
             route: `${route}`,
+            paymentMethod: `${paymentMethod}`,
             price: ticketPrice,
             unit: "kr",
             payed: false,
@@ -50,7 +57,38 @@ export const actions = {
         persons[index].previousTickets = [newTicket, ...persons[index].previousTickets]
 
         return {
-            success: true
+            success: `Ticket sent via ${paymentMethod}`
+        }
+    },
+    delete: async ({request}) => {
+        const data = await request.formData();
+        const ssn = data.get('ssn')
+        const price = data.get('price')
+
+        if (!ssn) {
+            return {
+                error: 'ssn not available.'
+            }
+        }
+
+        if (!price) {
+            return {
+                error: 'Could not identified ticket'
+            }
+        }
+
+        const index = persons.findIndex(p => p.ssn === Number(ssn))
+
+        if (index === -1) {
+            return {
+                error: `Could not find person with ssn: ${ssn}`
+            }
+        }
+
+        persons[index].previousTickets = persons[index].previousTickets.filter(t => t.price !== Number(price))
+    
+        return {
+            success: 'Ticket was deleted!'
         }
     }
 }

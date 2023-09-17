@@ -9,6 +9,7 @@ export interface Ticket {
     date: string
     time: string
     route: string
+    paymentMethod: string
     price: number
     unit: string
     payed: boolean
