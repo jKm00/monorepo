@@ -7,13 +7,13 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { allRoutes } from '$lib/shared/allRoutes';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
-	import { get } from 'svelte/store';
 
 	let input: string = '';
 	let errorMsg: string = '';
 
 	let routeSearch: string = '';
-	let selectedRoute: string = get(route) ?? '';
+
+	let openDialog = false;
 
 	$: filteredRoutes = allRoutes.filter((r) => r.toLowerCase().includes(routeSearch.toLowerCase()));
 
@@ -58,7 +58,7 @@
 					>
 					<p id="route" class="">{$route.length === 0 ? 'N/A' : $route}</p>
 				</div>
-				<Dialog.Root>
+				<Dialog.Root open={openDialog} onOpenChange={(e) => (openDialog = e ?? false)}>
 					<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}>Edit Route</Dialog.Trigger>
 					<Dialog.Content class="sm:max-w-[425px]">
 						<Dialog.Header>
@@ -77,8 +77,8 @@
 									{:else}
 										{#each filteredRoutes as _route}
 											<Button
-												on:click={() => (selectedRoute = _route)}
-												variant={selectedRoute === _route ? 'default' : 'outline'}>{_route}</Button
+												on:click={() => route.set(_route)}
+												variant={$route === _route ? 'default' : 'outline'}>{_route}</Button
 											>
 										{/each}
 									{/if}
@@ -86,8 +86,8 @@
 							</div>
 						</div>
 						<Dialog.Footer>
-							<Button on:click={() => (selectedRoute = '')} variant="outline">Clear</Button>
-							<Button on:click={() => route.set(selectedRoute)}>Save changes</Button>
+							<Button on:click={() => route.set('')} variant="outline">Clear</Button>
+							<Button on:click={() => (openDialog = false)}>Save changes</Button>
 						</Dialog.Footer>
 					</Dialog.Content>
 				</Dialog.Root>
