@@ -21,6 +21,7 @@ export const useParam = (
 
 	let debounceTimer: number | null = null;
 
+	// TODO: Unsubscribe on demount
 	value.subscribe((value) => {
 		if (finalOptions.debounced) {
 			if (debounceTimer) {
