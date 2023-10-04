@@ -29,6 +29,7 @@
 	"dependencies": {
 		"bits-ui": "^0.5.7",
 		"clsx": "^2.0.0",
+		"dayjs": "^1.11.9",
 		"formsnap": "^0.1.2",
 		"iconify-icon": "^1.0.8",
 		"lucide-svelte": "^0.279.0",

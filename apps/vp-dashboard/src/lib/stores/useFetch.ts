@@ -54,13 +54,14 @@ export const useFetch = <T>(path: string, options?: Options) => {
 			getData();
 		}
 
-		// TODO: Unsubscribe on demount
-		params.subscribe((_) => {
+		const unsubscribe = params.subscribe((_) => {
 			if (!firstLoad) {
 				getData();
 			}
 			firstLoad = false;
 		});
+
+		return () => unsubscribe()
 	});
 
 	return {

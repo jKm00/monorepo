@@ -1,6 +1,8 @@
+import { onMount } from 'svelte';
 import { get, writable, type Writable } from 'svelte/store';
 
 interface Options {
+	fallback?: string
 	debounced?: boolean;
 	debounceDelay?: number;
 }
@@ -10,7 +12,9 @@ export const useParam = (
 	params: Writable<Record<string, string>>,
 	options?: Options
 ) => {
-	const value = writable<string>(get(params)[key] || '');
+	const currentValue = get(params)[key]
+	const initialValue = currentValue ? currentValue : options?.fallback ?? ''
+	const value = writable<string>(initialValue);
 
 	const defaultOptions: Options = {
 		debounced: false,
@@ -21,22 +25,25 @@ export const useParam = (
 
 	let debounceTimer: number | null = null;
 
-	// TODO: Unsubscribe on demount
-	value.subscribe((value) => {
-		if (finalOptions.debounced) {
-			if (debounceTimer) {
-				clearTimeout(debounceTimer);
-			}
-
-			debounceTimer = setTimeout(() => {
+	onMount(() => {
+		const unsubscribe = value.subscribe((value) => {
+			if (finalOptions.debounced) {
+				if (debounceTimer) {
+					clearTimeout(debounceTimer);
+				}
+	
+				debounceTimer = setTimeout(() => {
+					updateParams(key, value, params);
+	
+					debounceTimer = null;
+				}, finalOptions.debounceDelay);
+			} else {
 				updateParams(key, value, params);
+			}
+		});
 
-				debounceTimer = null;
-			}, finalOptions.debounceDelay);
-		} else {
-			updateParams(key, value, params);
-		}
-	});
+		return () => unsubscribe()
+	})
 
 	return value;
 };
