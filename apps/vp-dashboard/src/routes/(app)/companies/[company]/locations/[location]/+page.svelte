@@ -51,13 +51,14 @@
 							<Button
 								on:click={() => order.set($order === 'asc' ? 'desc' : 'asc')}
 								variant="outline"
-								class="px-2"
+								class="px-2 w-[36px]"
 							>
-								{#if $order === 'asc'}
-									<iconify-icon icon="mdi:order-alphabetical-ascending" width="20" />
-								{:else}
-									<iconify-icon icon="mdi:order-alphabetical-descending" width="20" />
-								{/if}
+								<iconify-icon
+									icon={$order === 'asc'
+										? 'mdi:order-alphabetical-ascending'
+										: 'mdi:order-alphabetical-descending'}
+									width="20"
+								/>
 							</Button>
 						</div>
 						<div>

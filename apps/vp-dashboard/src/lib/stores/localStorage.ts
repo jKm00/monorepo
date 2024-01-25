@@ -22,4 +22,4 @@ export const useLocalStorage = <T>(key: string, fallbackValue: T) => {
 		update,
 		set
 	};
-};
+}

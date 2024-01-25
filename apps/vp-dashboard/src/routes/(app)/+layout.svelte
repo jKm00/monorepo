@@ -46,7 +46,7 @@
 
 <div class="custom-grid min-h-screen">
 	<!-- Logo -->
-	<h1 class="text-3xl font-bold border-r p-4 border-b">VoidePick</h1>
+	<h1 class="text-3xl font-bold border-r p-4 border-b"><a href="/">VoicePick</a></h1>
 	<!-- Header bar -->
 	<div class="flex justify-between items-center px-4 border-b">
 		<!-- Workspace filters -->
