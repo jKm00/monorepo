@@ -1,11 +1,7 @@
-<script>
-	import Eye from "./Eye.svelte";
-
+<script lang="ts">
+	import EyeWrapper from './EyeWrapper.svelte';
 </script>
+
 <div>
-  <!-- Eye wrapper -->
-  <div class="flex gap-2">
-    <Eye />
-    <Eye />
-  </div>
+	<EyeWrapper />
 </div>
