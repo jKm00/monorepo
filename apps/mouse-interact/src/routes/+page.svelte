@@ -1,8 +1,7 @@
 <script>
-	import LoginForm from "$lib/components/auth/LoginForm.svelte";
-
+	import LoginForm from '$lib/components/auth/LoginForm.svelte';
 </script>
 
-<div class="grid place-items-center min-h-screen">
+<div class="grid min-h-screen place-items-center">
 	<LoginForm />
 </div>
